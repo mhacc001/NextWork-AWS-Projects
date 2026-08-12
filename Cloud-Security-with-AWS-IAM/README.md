@@ -10,7 +10,6 @@ Hands-on project using AWS Identity and Access Management (IAM) to control acces
 - IAM User Groups
 - Resource tagging for environment-based access control
 - Account Aliases
-- IAM Policy Simulator
 
 ## Project Steps
 
@@ -18,10 +17,10 @@ Hands-on project using AWS Identity and Access Management (IAM) to control acces
 
 Launched two EC2 instances, one tagged for production and one for development, to simulate increased compute capacity for the holiday season.
 
-- Instance 1: `nextwork-prod-[name]` — tagged `Env: production`
-- Instance 2: `nextwork-dev-[name]` — tagged `Env: development`
+- Instance 1: `nextwork-prod-Marie` — tagged `Env: production`
+- Instance 2: `nextwork-dev-Marie` — tagged `Env: development`
 
-![EC2 instances running](./Screen_Shot_2026-08-12_at_1_50_05_PM.png)
+![EC2 instances correctly named and tagged](./Screen_Shot_2026-08-12_at_1_57_25_PM.png)
 
 ### Step 2: Create an IAM Policy
 
@@ -58,28 +57,46 @@ Created a custom IAM policy (`NextWorkDevEnvironmentPolicy`) restricting access 
 }
 ```
 
-![IAM policy JSON](./Screen_Shot_2026-08-12_at_2_06_04_PM.png)
+![IAM policy JSON created](./Screen_Shot_2026-08-12_at_2_06_04_PM.png)
 
 ### Step 3: Create an AWS Account Alias
 
-Created a friendly account alias (`nextwork-alias-[name]`) to simplify the sign-in URL for new IAM users, replacing the default numeric account ID in the console login link.
+Created a friendly account alias (`nextwork-alias-marie`) to simplify the sign-in URL for new IAM users, replacing the default numeric account ID in the console login link.
 
 ![Account alias setup](./Screen_Shot_2026-08-12_at_2_15_06_PM.png)
 
 ### Step 4: Create IAM Users and User Groups
 
-Created an IAM user group (`nextwork-dev-group`) with the `NextWorkDevEnvironmentPolicy` attached, then created an IAM user for the intern and added them to the group — centralizing permission management instead of applying policies to individual users.
+Created an IAM user group (`nextwork-dev-group`) with the `NextWorkDevEnvironmentPolicy` attached, then created an IAM user (`nextwork-dev-marie`) for the intern and added them to the group — centralizing permission management instead of applying policies to individual users.
 
-![IAM user and group creation](./Screen_Shot_2026-08-12_at_2_20_29_PM.png)
+![New user created, console sign-in details generated](./Screen_Shot_2026-08-12_at_2_20_29_PM.png)
+
+![IAM users list confirming group membership](./Screen_Shot_2026-08-12_at_2_23_31_PM.png)
 
 ### Step 5: Test the Intern's Access
 
-Logged in as the new IAM user to verify permission boundaries:
+Logged in as the new IAM user in an incognito window to verify permission boundaries.
 
-- Attempted to stop the **production** instance → **Access Denied** (expected — not authorized under the attached policy)
-- Attempted to stop the **development** instance → **Success**
+**Signing in as the intern:**
 
-![Access denied on production instance](./Screen_Shot_2026-08-12_at_2_34_11_PM.png)
+![IAM user sign-in form](./Screen_Shot_2026-08-12_at_2_32_14_PM.png)
+
+**Fresh console view as a new user** — as expected, several dashboard panels show no history or access yet, since this identity has never been used before:
+
+![New intern's console home view](./Screen_Shot_2026-08-12_at_2_32_45_PM.png)
+
+**Attempting to stop the production instance:**
+
+![Stop instance dialog on production](./Screen_Shot_2026-08-12_at_2_33_58_PM.png)
+
+Result: **Access Denied** — confirming the policy correctly blocks the intern from managing production resources.
+
+![Access denied error on production instance](./Screen_Shot_2026-08-12_at_2_34_11_PM.png)
+
+**Attempting to stop the development instance:**
+
+Result: **Success** — the intern's scoped permissions correctly allow managing development resources.
+
 ![Successful stop on development instance](./Screen_Shot_2026-08-12_at_2_35_39_PM.png)
 
 ## Key Takeaways
@@ -88,4 +105,4 @@ Logged in as the new IAM user to verify permission boundaries:
 - `Deny` always takes precedence over `Allow` within a policy evaluation, which is critical for building safe least-privilege access controls.
 - Resource tagging (e.g., `Env: production` vs `Env: development`) combined with IAM policy conditions is an effective way to scope access without creating a separate policy per resource.
 - IAM user groups centralize permission management — attaching a policy to a group rather than individual users makes onboarding and offboarding far more scalable.
-- The IAM Policy Simulator is a faster way to validate permission logic than manually logging in as each user to test access boundaries.
+- Testing IAM policies by actually logging in as the scoped user (rather than just trusting the policy JSON) confirms real-world behavior and catches misconfigurations early.
