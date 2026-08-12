@@ -20,7 +20,7 @@ Launched two EC2 instances, one tagged for production and one for development, t
 - Instance 1: `nextwork-prod-Marie` — tagged `Env: production`
 - Instance 2: `nextwork-dev-Marie` — tagged `Env: development`
 
-![EC2 instances correctly named and tagged](./Screen_Shot_2026-08-12_at_1_57_25_PM.png)
+![EC2 instances correctly named and tagged](./Screen%20Shot%202026-08-12%20at%201.57.25%20PM.png)
 
 ### Step 2: Create an IAM Policy
 
@@ -57,21 +57,21 @@ Created a custom IAM policy (`NextWorkDevEnvironmentPolicy`) restricting access 
 }
 ```
 
-![IAM policy JSON created](./Screen_Shot_2026-08-12_at_2_06_04_PM.png)
+![IAM policy JSON created](./Screen%20Shot%202026-08-12%20at%202.06.04%20PM.png)
 
 ### Step 3: Create an AWS Account Alias
 
 Created a friendly account alias (`nextwork-alias-marie`) to simplify the sign-in URL for new IAM users, replacing the default numeric account ID in the console login link.
 
-![Account alias setup](./Screen_Shot_2026-08-12_at_2_15_06_PM.png)
+![Account alias setup](./Screen%20Shot%202026-08-12%20at%202.15.06%20PM.png)
 
 ### Step 4: Create IAM Users and User Groups
 
 Created an IAM user group (`nextwork-dev-group`) with the `NextWorkDevEnvironmentPolicy` attached, then created an IAM user (`nextwork-dev-marie`) for the intern and added them to the group — centralizing permission management instead of applying policies to individual users.
 
-![New user created, console sign-in details generated](./Screen_Shot_2026-08-12_at_2_20_29_PM.png)
+![New user created, console sign-in details generated](./Screen%20Shot%202026-08-12%20at%202.20.29%20PM.png)
 
-![IAM users list confirming group membership](./Screen_Shot_2026-08-12_at_2_23_31_PM.png)
+![IAM users list confirming group membership](./Screen%20Shot%202026-08-12%20at%202.23.31%20PM.png)
 
 ### Step 5: Test the Intern's Access
 
@@ -79,25 +79,25 @@ Logged in as the new IAM user in an incognito window to verify permission bounda
 
 **Signing in as the intern:**
 
-![IAM user sign-in form](./Screen_Shot_2026-08-12_at_2_32_14_PM.png)
+![IAM user sign-in form](./Screen%20Shot%202026-08-12%20at%202.32.14%20PM.png)
 
 **Fresh console view as a new user** — as expected, several dashboard panels show no history or access yet, since this identity has never been used before:
 
-![New intern's console home view](./Screen_Shot_2026-08-12_at_2_32_45_PM.png)
+![New intern's console home view](./Screen%20Shot%202026-08-12%20at%202.32.45%20PM.png)
 
 **Attempting to stop the production instance:**
 
-![Stop instance dialog on production](./Screen_Shot_2026-08-12_at_2_33_58_PM.png)
+![Stop instance dialog on production](./Screen%20Shot%202026-08-12%20at%202.33.58%20PM.png)
 
 Result: **Access Denied** — confirming the policy correctly blocks the intern from managing production resources.
 
-![Access denied error on production instance](./Screen_Shot_2026-08-12_at_2_34_11_PM.png)
+![Access denied error on production instance](./Screen%20Shot%202026-08-12%20at%202.34.11%20PM.png)
 
 **Attempting to stop the development instance:**
 
 Result: **Success** — the intern's scoped permissions correctly allow managing development resources.
 
-![Successful stop on development instance](./Screen_Shot_2026-08-12_at_2_35_39_PM.png)
+![Successful stop on development instance](./Screen%20Shot%202026-08-12%20at%202.35.39%20PM.png)
 
 ## Key Takeaways
 
